@@ -1,0 +1,151 @@
+CREATE TABLE records_may21 (
+	record_id INTEGER, 
+	date DATE, ceo_id INTEGER, 
+	first_name TEXT, 
+	last_name TEXT, 
+	date_of_birth DATE, 
+	total_revenue REAL, 
+	total_expenses REAL, 
+	state VARCHAR(14), 
+	postal_codes CHAR(5), 
+	compani_name TEXT, 
+	industry TEXT, 
+	email TEXT, 
+	PRIMARY KEY(record_id));
+
+
+SELECT distinct *
+FROM public.records_may21;
+
+--Task 1
+--Show all columns in the dataset
+
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_name = 'records_may21';
+
+--Rename column 'compani_name' with 'company_name'
+ALTER TABLE records_may21
+RENAME compani_name TO company_name;
+
+--Task 2
+--Count of rows in the dataset
+SELECT COUNT(*)
+FROM public.records_may21;
+
+--Task 3
+DELETE FROM public.records_may21
+WHERE record_id = 430;
+
+--Task 4
+INSERT INTO public.records_may21 (record_id, date, ceo_id, first_name, last_name, date_of_birth, total_revenue, total_expenses, state, postal_codes, company_name, industry, email)
+VALUES ('430', '31/10/2020', '1012', 'David', 'Wells', '19/09/1977', '495.71', '202', 'Florida', '13888','Adams-Rice', 'Financial',	'david.wells@Adams.io')
+
+--Check the updated variables
+select distinct *
+from public.records_may21
+where record_id = 430
+
+--Task 5
+--Change ceo state (null) to Texas
+
+SELECT DISTINCT ceo_id, state
+FROM public.records_may21
+WHERE state IS NULL;
+
+--Update table
+UPDATE public.records_may21
+SET state = 'Texas'
+WHERE ceo_id = 1017;
+
+--Check updated table
+SELECT DISTINCT ceo_id, state
+FROM public.records_may21
+WHERE state LIKE 'Texas%' AND ceo_id = 1017;
+
+--Task 6
+--Display unique state in the data
+SELECT DISTINCT state
+FROM public.records_may21;
+
+--Task 7
+--Change New Yoke to New York
+UPDATE public.records_may21
+SET state = 'New York'
+WHERE state = 'New Yoke';
+
+--Task 8
+--Total profit made by all companies in the 3 years
+SELECT (SUM(total_revenue)-SUM(total_expenses)) AS total_profit
+FROM records_may21;
+
+--Compare
+--Total profit made by each companies in the 3 years
+SELECT(total_revenue-total_expenses)as profit from
+(SELECT SUM(total_revenue) as total_revenue,SUM(total_expenses) as total_expenses
+FROM records_may21) stat;
+
+--Task 9 Company with the lowest profit in the 3 years
+SELECT date, company_name, MIN(total_profit) AS min_profit FROM
+(SELECT date, company_name, (total_revenue - total_expenses) AS total_profit
+FROM public.records_may21) AS total_profit
+GROUP BY date, company_name
+ORDER BY min_profit ASC
+LIMIT 1;
+
+--Task 10
+SELECT state, AVG(total_revenue-total_expenses) AS mean_profit
+FROM records_may21
+GROUP BY state
+ORDER BY mean_profit DESC
+LIMIT 1;
+
+--Task 11
+--Display youngest CEO's first name, last name, ceo_id, and date of birth
+SELECT first_name, last_name, ceo_id, date_of_birth
+FROM records_may21
+ORDER BY date_of_birth DESC
+LIMIT 1;
+
+--Task 12
+SELECT DISTINCT first_name
+FROM records_may21
+WHERE industry LIKE 'IT' AND state LIKE 'California';
+
+--Task 13
+SELECT postal_codes, state, MAX(total_revenue) AS highest_revenue
+FROM records_may21
+WHERE state LIKE 'New York'
+GROUP BY postal_codes, state
+ORDER BY highest_revenue DESC
+LIMIT 1;
+
+--Task 14
+SELECT COUNT(ceo_id)
+FROM records_may21
+WHERE email LIKE '%.com';
+
+--Task 15
+SELECT first_name, COUNT(ceo_id) AS number_of_ceo
+FROM records_may21
+GROUP BY first_name
+ORDER BY number_of_ceo DESC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
