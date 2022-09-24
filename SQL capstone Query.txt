@@ -83,7 +83,7 @@ FROM int_brewery
 WHERE months = 'December' AND years = 2018
 GROUP BY months, years;
 
---7. Compare the profit in percentage for each of the month in 2019
+--7. Compare the profit in percentage for each of the month in 2019.
 
 SELECT months, (total_profit/grand_profit::float)*100 AS perc_profit
 FROM
