@@ -41,16 +41,16 @@ Update int_brewery
 set territory = 'Anglophone'
 where countries LIKE 'Ghana' OR countries LIKE 'Nigeria';
 
---Task 1
---1. Within the space of the last three years, what was the profit worth of the breweries,
---inclusive of the anglophone and the francophone territories?
+/*Task 1
+1. Within the space of the last three years, what was the profit worth of the breweries,
+inclusive of the anglophone and the francophone territories? */
 
 
 SELECT SUM(profit)
 FROM int_brewery;
 
---Compare the total profit between these two territories in order for the territory manager,
---Mr. Stone made a strategic decision that will aid profit maximization in 2020.
+/*Compare the total profit between these two territories in order for the territory manager,
+Mr. Stone made a strategic decision that will aid profit maximization in 2020.*/
 
 SELECT territory, SUM(profit) AS sum_of_profit
 FROM int_brewery
@@ -106,9 +106,9 @@ WHERE countries = 'Senegal'
 GROUP BY brands
 ORDER BY total_profit DESC;
 
--- BRAND ANALYSIS
---Task 1 Within the last two years, the brand manager wants to know the top three brands
---consumed in the francophone countries
+/* BRAND ANALYSIS
+Task 1 Within the last two years, the brand manager wants to know the top three brands
+consumed in the francophone countries */
 
 SELECT brands, SUM(quantity) AS quantity_consumed
 FROM int_brewery
@@ -126,8 +126,8 @@ GROUP BY brands
 ORDER BY quantity_consumed
 LIMIT 2;
 
---Task 3  Find out the details of beers consumed in the past three years in the most oil reached
---country in West Africa.
+/*Task 3  Find out the details of beers consumed in the past three years in the most oil reached
+country in West Africa. */
 
 SELECT brands, SUM(quantity) AS quantity_consumed
 FROM int_brewery
